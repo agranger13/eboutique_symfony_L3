@@ -28,6 +28,16 @@ class Category
      */
     private $items;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Media", mappedBy="category", cascade={"persist", "remove"})
+     */
+    private $media;
+
     public function __toString(){
         return $this->name;
     }
@@ -80,6 +90,36 @@ class Category
             if ($item->getCategory() === $this) {
                 $item->setCategory(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?Media $media): self
+    {
+        $this->media = $media;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCategory = null === $media ? null : $this;
+        if ($media->getCategory() !== $newCategory) {
+            $media->setCategory($newCategory);
         }
 
         return $this;

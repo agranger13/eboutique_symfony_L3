@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Order;
-use App\Form\Order2Type;
+use App\Form\Order3Type;
 use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/order")
+ * @IsGranted("ROLE_ADMIN")
  */
 class OrderController extends AbstractController
 {
@@ -31,7 +32,7 @@ class OrderController extends AbstractController
     public function new(Request $request): Response
     {
         $order = new Order();
-        $form = $this->createForm(Order2Type::class, $order);
+        $form = $this->createForm(Order3Type::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +64,7 @@ class OrderController extends AbstractController
      */
     public function edit(Request $request, Order $order): Response
     {
-        $form = $this->createForm(Order2Type::class, $order);
+        $form = $this->createForm(Order3Type::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

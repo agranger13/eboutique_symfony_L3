@@ -2,29 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\PaymentInfo;
+use App\Entity\Media;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PaymentInfoType extends AbstractType
+class Media1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('type')
-            ->add('number')
-            ->add('expires')
-            ->add('cvv')
-            ->add('nameHolder')
-            ->add('user')
+            ->add('path')
+            ->add('alt')
+            ->add('product')
+            ->add('category')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PaymentInfo::class,
+            'data_class' => Media::class,
         ]);
     }
 }

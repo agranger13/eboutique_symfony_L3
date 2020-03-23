@@ -19,25 +19,30 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $total;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\History", mappedBy="orderId")
-     */
-    private $items;
-
-    /**
      * @ORM\Column(type="string", length=50)
      */
     private $orderNumber;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateTime;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $valid;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommandLine", mappedBy="orders")
+     */
+    private $commandLines;
 
     public function __toString(){
         return $this->orderNumber;
@@ -47,23 +52,12 @@ class Order
     {
         $this->users = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->commandLines = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTotal(): ?float
-    {
-        return $this->total;
-    }
-
-    public function setTotal(float $total): self
-    {
-        $this->total = $total;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -78,37 +72,6 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection|History[]
-     */
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function addItem(History $item): self
-    {
-        if (!$this->items->contains($item)) {
-            $this->items[] = $item;
-            $item->setOrderId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(History $item): self
-    {
-        if ($this->items->contains($item)) {
-            $this->items->removeElement($item);
-            // set the owning side to null (unless already changed)
-            if ($item->getOrderId() === $this) {
-                $item->setOrderId(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getOrderNumber(): ?string
     {
         return $this->orderNumber;
@@ -117,6 +80,61 @@ class Order
     public function setOrderNumber(string $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function getDateTime(): ?\DateTimeInterface
+    {
+        return $this->dateTime;
+    }
+
+    public function setDateTime(\DateTimeInterface $dateTime): self
+    {
+        $this->dateTime = $dateTime;
+
+        return $this;
+    }
+
+    public function getValid(): ?int
+    {
+        return $this->valid;
+    }
+
+    public function setValid(int $valid): self
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommandLine[]
+     */
+    public function getCommandLines(): Collection
+    {
+        return $this->commandLines;
+    }
+
+    public function addCommandLine(CommandLine $commandLine): self
+    {
+        if (!$this->commandLines->contains($commandLine)) {
+            $this->commandLines[] = $commandLine;
+            $commandLine->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandLine(CommandLine $commandLine): self
+    {
+        if ($this->commandLines->contains($commandLine)) {
+            $this->commandLines->removeElement($commandLine);
+            // set the owning side to null (unless already changed)
+            if ($commandLine->getOrders() === $this) {
+                $commandLine->setOrders(null);
+            }
+        }
 
         return $this;
     }

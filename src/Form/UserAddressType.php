@@ -2,25 +2,32 @@
 
 namespace App\Form;
 
-use App\Entity\History;
+use App\Entity\UserAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HistoryType extends AbstractType
+class UserAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderId')
-            ->add('itemId')
+            ->add('type')
+            ->add('name')
+            ->add('firstName')
+            ->add('phone')
+            ->add('address')
+            ->add('cp')
+            ->add('city')
+            ->add('country')
+            ->add('user')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => History::class,
+            'data_class' => UserAddress::class,
         ]);
     }
 }

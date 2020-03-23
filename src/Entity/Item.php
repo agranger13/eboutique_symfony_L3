@@ -36,7 +36,7 @@ class Item
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock;
+    private $available;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="items")
@@ -45,9 +45,14 @@ class Item
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\History", mappedBy="itemId")
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="product")
      */
-    private $orders;
+    private $media;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommandLine", mappedBy="item")
+     */
+    private $commandLines;
 
     public function __toString(){
         return $this->name;
@@ -56,6 +61,8 @@ class Item
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->commandLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,14 +106,14 @@ class Item
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getAvailable(): ?int
     {
-        return $this->stock;
+        return $this->available;
     }
 
-    public function setStock(int $stock): self
+    public function setAvailable(int $available): self
     {
-        $this->stock = $stock;
+        $this->available = $available;
 
         return $this;
     }
@@ -124,30 +131,61 @@ class Item
     }
 
     /**
-     * @return Collection|History[]
+     * @return Collection|Media[]
      */
-    public function getOrders(): Collection
+    public function getMedia(): Collection
     {
-        return $this->orders;
+        return $this->media;
     }
 
-    public function addOrder(History $order): self
+    public function addMedium(Media $medium): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setItemId($this);
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(History $order): self
+    public function removeMedium(Media $medium): self
     {
-        if ($this->orders->contains($order)) {
-            $this->orders->removeElement($order);
+        if ($this->media->contains($medium)) {
+            $this->media->removeElement($medium);
             // set the owning side to null (unless already changed)
-            if ($order->getItemId() === $this) {
-                $order->setItemId(null);
+            if ($medium->getProduct() === $this) {
+                $medium->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommandLine[]
+     */
+    public function getCommandLines(): Collection
+    {
+        return $this->commandLines;
+    }
+
+    public function addCommandLine(CommandLine $commandLine): self
+    {
+        if (!$this->commandLines->contains($commandLine)) {
+            $this->commandLines[] = $commandLine;
+            $commandLine->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandLine(CommandLine $commandLine): self
+    {
+        if ($this->commandLines->contains($commandLine)) {
+            $this->commandLines->removeElement($commandLine);
+            // set the owning side to null (unless already changed)
+            if ($commandLine->getItem() === $this) {
+                $commandLine->setItem(null);
             }
         }
 

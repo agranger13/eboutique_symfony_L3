@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Item;
-use App\Form\Item2Type;
+use App\Form\Item3Type;
 use App\Repository\ItemRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/item")
+ * @IsGranted("ROLE_ADMIN")
  */
 class ItemController extends AbstractController
 {
@@ -31,7 +32,7 @@ class ItemController extends AbstractController
     public function new(Request $request): Response
     {
         $item = new Item();
-        $form = $this->createForm(Item2Type::class, $item);
+        $form = $this->createForm(Item3Type::class, $item);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +64,7 @@ class ItemController extends AbstractController
      */
     public function edit(Request $request, Item $item): Response
     {
-        $form = $this->createForm(Item2Type::class, $item);
+        $form = $this->createForm(Item3Type::class, $item);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

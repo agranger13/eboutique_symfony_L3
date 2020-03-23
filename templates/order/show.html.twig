@@ -12,12 +12,16 @@
                 <td>{{ order.id }}</td>
             </tr>
             <tr>
-                <th>Total</th>
-                <td>{{ order.total }}</td>
-            </tr>
-            <tr>
                 <th>OrderNumber</th>
                 <td>{{ order.orderNumber }}</td>
+            </tr>
+            <tr>
+                <th>DateTime</th>
+                <td>{{ order.dateTime ? order.dateTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Valid</th>
+                <td>{{ order.valid }}</td>
             </tr>
         </tbody>
     </table>

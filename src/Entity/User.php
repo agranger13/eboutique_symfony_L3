@@ -43,21 +43,6 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $birthDate;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PaymentInfo", mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $paymentInfo;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="user", orphanRemoval=true)
      */
     private $orders;
@@ -67,6 +52,16 @@ class User implements UserInterface
      */
     private $firstName;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phone;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserAddress", mappedBy="user")
+     */
+    private $address;
+
     public function __toString(){
         return $this->firstName.$this->lastName;
     }
@@ -75,6 +70,7 @@ class User implements UserInterface
     {
         $this->payments = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->address = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,48 +163,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(\DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPaymentInfo(): ?PaymentInfo
-    {
-        return $this->paymentInfo;
-    }
-
-    public function setPaymentInfo(?PaymentInfo $paymentInfo): self
-    {
-        $this->paymentInfo = $paymentInfo;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newUser = null === $paymentInfo ? null : $this;
-        if ($paymentInfo->getUser() !== $newUser) {
-            $paymentInfo->setUser($newUser);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Order[]
      */
@@ -248,6 +202,49 @@ class User implements UserInterface
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?int
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(int $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserAddress[]
+     */
+    public function getAddress(): Collection
+    {
+        return $this->address;
+    }
+
+    public function addAddress(UserAddress $address): self
+    {
+        if (!$this->address->contains($address)) {
+            $this->address[] = $address;
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(UserAddress $address): self
+    {
+        if ($this->address->contains($address)) {
+            $this->address->removeElement($address);
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
 
         return $this;
     }
