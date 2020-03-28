@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/command/line")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class CommandLineController extends AbstractController
 {

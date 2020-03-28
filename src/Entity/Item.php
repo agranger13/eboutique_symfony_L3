@@ -45,7 +45,7 @@ class Item
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="product", cascade={"persist", "remove"})
      */
     private $media;
 

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/media")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class MediaController extends AbstractController
 {

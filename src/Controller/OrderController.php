@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/order")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class OrderController extends AbstractController
 {

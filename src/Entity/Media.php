@@ -41,6 +41,11 @@ class Media
      */
     private $category;
 
+    public function __toString(){
+        return $this->path;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

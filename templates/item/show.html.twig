@@ -1,38 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Item{% endblock %}
+
+{% block title %}{{item.name}}{% endblock %}
+{% block stylesheets %}
+<link href="{{ asset('css/item.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
-    <h1>Item</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ item.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ item.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ item.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ item.price }}</td>
-            </tr>
-            <tr>
-                <th>Available</th>
-                <td>{{ item.available }}</td>
-            </tr>
-        </tbody>
-    </table>
-
+<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						
+						<div class="preview-pic tab-content">
+                            {% for img in item.media %}
+                            <div class="tab-pane {% if loop.first %} active {% endif %}" id="pic-{{loop.index}}"><img src="{{asset('' ~ img ~ '')}}" /></div>
+                            {% endfor %}
+						</div>
+						<ul class="preview-thumbnail nav nav-tabs">
+                            {% for img in item.media %}
+                                <li {% if loop.first %} class = "active"{% endif %}><a data-target="#pic-{{loop.index}}" data-toggle="tab"><img src="{{asset('' ~ img ~ '')}}" /></a></li>
+                            {% endfor %}
+						</ul>
+						
+					</div>
+					<div class="details col-md-6">
+						<h3 class="product-title">{{item.name}}</h3>
+						<p class="product-description">{{item.description}}</p>
+						<h4 class="price">current price: <span>{{item.price}}€</span></h4>
+						<div class="action">
+							<button class="add-to-cart btn btn-default" type="button">add to cart</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('item_index') }}">back to list</a>
-
     <a href="{{ path('item_edit', {'id': item.id}) }}">edit</a>
-
     {{ include('item/_delete_form.html.twig') }}
+{% endif %}
+  {% include 'footer.html.twig' %}
 {% endblock %}

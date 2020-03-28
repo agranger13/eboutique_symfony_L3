@@ -1,0 +1,12 @@
+body {
+  padding-top: 56px;
+}
+a.text-primary-hover{
+  color : #212529;
+}
+a.text-primary-hover:hover {
+  color: #fed136 !important;
+}
+.card-footer{
+  text-align: center;
+}
