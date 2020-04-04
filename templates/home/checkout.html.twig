@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block title %}Cart{% endblock %}
+{% block body %}
+<div class="container wrapper">  
+    <div class="row cart-body">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+            <!--REVIEW ORDER-->
+            <div class="panel panel-info">
+                <h2 class="panel-heading">
+                    Review Order <span class="pull-right"><small><a class="afix-1" href="{{ url('cart') }}">Edit Cart</a></small></span>
+                </h2>
+                <div class="panel-body">
+                    {% set subtotal = 0 %}
+                    {% for item in items %}
+                    <div class="form-group">
+                        <div class="col-sm-3 col-xs-3">
+                            <img class="icon-item" src="{{asset('' ~ item.media.first ~ '')}}" />
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <div class="col-xs-12">{{item.name}}</div>
+                            <div class="col-xs-12"><small>Quantity:<span>{{ in_cart[item.id] }}</span></small></div>
+                        </div>
+                        <div class="col-sm-3 col-xs-3 text-right">
+                            <h6>{{ item.price * in_cart[item.id] }}€</h6>
+                            {% set subtotal = subtotal + item.price * in_cart[item.id] %}
+                        </div>
+                    </div>
+                    <div class="form-group"><hr /></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!--REVIEW ORDER END-->
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+            <!--SHIPPING METHOD-->
+            <div class="panel panel-info">
+                <h2 class="panel-heading">Address</h2>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <h4>Shipping Address</h4>
+                    </div>
+                    {% for addr in address %}
+                    <input id="adr-{{addr.id}}" type="radio" name="address">
+                    <label for="#adr-{{addr.id}}"> {{addr}} </div>
+                    {% endfor %}
+                    <a href="{{url('user_address_new')}}">new address<a>
+                </div>
+            </div>
+            <!--SHIPPING METHOD END-->
+            <!--CREDIT CART PAYMENT-->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4>Secure Payment</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Card Type:</strong></div>
+                        <div class="col-md-12">
+                            <select id="CreditCardType" name="CreditCardType" class="form-control">
+                                <option value="5">Visa</option>
+                                <option value="6">MasterCard</option>
+                                <option value="7">American Express</option>
+                                <option value="8">Discover</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Card CVV:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <strong>Expiration Date</strong>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                        </select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Year</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2026</option>
+                                <option value="2025">2027</option>
+                                <option value="2024">2028</option>
+                                <option value="2025">2029</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <span>Pay secure using your credit card.</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="cards">
+                                <li class="visa hand">Visa</li>
+                                <li class="mastercard hand">MasterCard</li>
+                                <li class="amex hand">Amex</li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--CREDIT CART PAYMENT END-->
+        </div>
+    </div>
+    <div class="row cart-footer">
+
+    </div>
+</div>
+{% endblock %}

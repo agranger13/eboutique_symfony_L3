@@ -17,11 +17,20 @@
             <a class="nav-link js-scroll-trigger" href="{{ url('shop') }}">Shop</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{{ url('cart') }}">Cart</a>
+          </li>
+          {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="{{ url('profile') }}">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="{{ url('cart') }}">Cart</a>
+            <a class="nav-link js-scroll-trigger" href="{{ url('app_logout') }}">Déconnexion</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{{ url('app_login') }}">Connexion</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>

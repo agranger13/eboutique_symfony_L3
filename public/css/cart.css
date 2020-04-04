@@ -46,3 +46,7 @@ section.jumbotron{
 .product_rassurance .list-inline li:hover {
     color: #343a40;
 }
+
+.icon-item{
+    max-width: 50px;
+}

@@ -17,7 +17,10 @@
         <h1 class="my-4">Preserve the Earth</h1>
         <div class="list-group">
           {% for cat in categories %}
-          <a href="#" class="list-group-item text-primary-hover">{{cat.name}}</a>
+          <a href="{{ url('category_filter',{'id':cat.id}) }}" 
+              class="list-group-item text-primary-hover {% if category_sorted != null and cat.id == category_sorted %} category-selected {% endif %}">
+                  {{cat.name}}
+          </a>
           {% endfor %}
         </div>
 
@@ -26,7 +29,7 @@
 
       <div class="col-lg-9">
 
-        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+        {# <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
           <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -50,11 +53,12 @@
           <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
-          </a>
-        </div>
+          </a> 
+        </div>#}
 
         <div class="row">
           {% for item in items %}
+          {% if (category_sorted != null and item.category.id == category_sorted) or category_sorted == null %}
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
                 <a href="{{ 'item/' ~ item.id }}"><img class="card-img-top" src="{{asset('' ~ item.media.first ~ '')}}" alt=""></a>
@@ -65,11 +69,18 @@
                   <h5>{{item.price}}€</h5>
                   <p class="card-text">{{item.description}}</p>
                 </div>
-                <div class="card-footer">
-                  <button class="btn btn-primary text-uppercase add-to-cart" onclick="addToCart({{item.id}})">Add to cart</button>
+                <div id="action-div-{{item.id}}" class="card-footer action-div" product-id="{{ item.id }}">
+                  {# <a class="btn btn-primary text-uppercase add-to-cart" onclick="addToCart({{item.id}})">Add to cart</a> #}
+                  <a class="btn btn-primary text-uppercase add-to-cart" href="{{ url('item-toCart',{'id':item.id}) }}">Add to cart</a>
+                  {% if in_cart[item.id] is defined %}
+                  <span>
+                    ({{ in_cart[item.id] }})
+                  </span>
+                  {% endif %}
                 </div>
               </div>
             </div>
+          {% endif %}
           {% endfor %}
         </div>
         <!-- /.row -->
@@ -84,4 +95,5 @@
   <!-- /.container -->
 
   {% include 'footer.html.twig' %}
+  {# <script src="{{ asset('scripts/manage-cart.js')}}"></script> #}
 {% endblock %}

@@ -29,8 +29,14 @@
 						<h3 class="product-title">{{item.name}}</h3>
 						<p class="product-description">{{item.description}}</p>
 						<h4 class="price">current price: <span>{{item.price}}€</span></h4>
-						<div class="action">
-							<button class="add-to-cart btn btn-default" type="button">add to cart</button>
+						<div id="action-div-{{item.id}}" class="action action-div" product-id="{{ item.id }}">
+							{# <a class="add-to-cart" onclick="addToCart({{item.id}})">add to cart</a> #}
+							<a class="add-to-cart" href="{{ url('item-toCart',{'id':item.id}) }}">add to cart</a>
+							{% if in_cart[item.id] is defined %}
+							<span>
+								({{ in_cart[item.id] }})
+							</span>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -42,5 +48,6 @@
     <a href="{{ path('item_edit', {'id': item.id}) }}">edit</a>
     {{ include('item/_delete_form.html.twig') }}
 {% endif %}
-  {% include 'footer.html.twig' %}
+  	{% include 'footer.html.twig' %}
+	{# <script src="{{ asset('scripts/manage-cart.js')}}"></script> #}
 {% endblock %}

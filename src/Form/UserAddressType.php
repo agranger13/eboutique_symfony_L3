@@ -6,6 +6,7 @@ use App\Entity\UserAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use User;
 
 class UserAddressType extends AbstractType
 {
@@ -19,15 +20,18 @@ class UserAddressType extends AbstractType
             ->add('address')
             ->add('cp')
             ->add('city')
-            ->add('country')
-            ->add('user')
-        ;
+            ->add('country');
+        if (in_array('ROLE_ADMIN', $options['role'])) {
+            $builder->add('user');
+        }
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => UserAddress::class,
+            'role' => ['ROLE_USER']
         ]);
     }
 }

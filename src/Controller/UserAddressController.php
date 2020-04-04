@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/user/address")
@@ -17,6 +18,7 @@ class UserAddressController extends AbstractController
 {
     /**
      * @Route("/", name="user_address_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(UserAddressRepository $userAddressRepository): Response
     {
@@ -27,19 +29,29 @@ class UserAddressController extends AbstractController
 
     /**
      * @Route("/new", name="user_address_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request): Response
     {
         $userAddress = new UserAddress();
-        $form = $this->createForm(UserAddressType::class, $userAddress);
+        $form = $this->createForm(UserAddressType::class, 
+                $userAddress, 
+                array("role"=>$this->getUser()->getRoles()) );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+                $userAddress->setUser($this->getUser());
+            }
             $entityManager->persist($userAddress);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_address_index');
+            if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+                return $this->redirectToRoute('user_address_index');
+            }else{
+                return $this->redirectToRoute('profile');
+            }
         }
 
         return $this->render('user_address/new.html.twig', [
@@ -50,6 +62,7 @@ class UserAddressController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_address_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(UserAddress $userAddress): Response
     {
@@ -60,6 +73,7 @@ class UserAddressController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_address_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, UserAddress $userAddress): Response
     {
@@ -80,6 +94,7 @@ class UserAddressController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_address_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, UserAddress $userAddress): Response
     {

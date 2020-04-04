@@ -27,29 +27,38 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% set subtotal = 0 %}
+                        {% for item in items %}
                         <tr>
-                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                            <td>Product Name Dada</td>
+                            <td><img class="icon-item" src="{{asset('' ~ item.media.first ~ '')}}" /> </td>
+                            <td>{{item.name}}</td>
+                            {% if item.available > 0 %}
                             <td>In stock</td>
-                            <td><input class="form-control" type="text" value="1" /></td>
-                            <td class="text-right">124,90 €</td>
-                            <td class="text-right"><button class="btn btn-sm btn-danger">remove</button> </td>
+                            {% else %}
+                            <td>Out of stock</td>
+                            {% endif %}
+                            <td><input class="form-control" type="text" value="{{ in_cart[item.id] }}" /></td>
+                            <td class="text-right">{{ item.price * in_cart[item.id] }}</td>
+                            {% set subtotal = subtotal + item.price * in_cart[item.id] %}
+                            <td class="text-right"><a class="btn btn-sm btn-danger" href="{{url('remove-fromCart',{'id':item.id})}}" >remove</a> </td>
                         </tr>
+                        {% endfor %}
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>Sub-Total</td>
-                            <td class="text-right">255,90 €</td>
+                            <td class="text-right">{{ subtotal }} €</td>
                         </tr>
+                        {% set shipping = 6.90 %}
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>Shipping</td>
-                            <td class="text-right">6,90 €</td>
+                            <td class="text-right">{{ shipping }} €</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -57,7 +66,7 @@
                             <td></td>
                             <td></td>
                             <td><strong>Total</strong></td>
-                            <td class="text-right"><strong>346,90 €</strong></td>
+                            <td class="text-right"><strong>{{ subtotal + shipping }} €</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -66,10 +75,11 @@
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
-                    <button class="btn btn-block btn-light">Continue Shopping</button>
+                    <a class="btn btn-block btn-light" href="{{'shop'}}">Continue Shopping</a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-lg btn-block btn-primary text-uppercase">Checkout</button>
+                    <a class="btn btn-lg btn-block btn-primary text-uppercase" 
+                        href="{% if (subtotal + shipping) > shipping %} {{url('checkout')}} {% endif %}" >Checkout</a>
                 </div>
             </div>
         </div>

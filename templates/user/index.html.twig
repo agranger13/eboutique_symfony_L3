@@ -13,7 +13,6 @@
                 <th>Roles</th>
                 <th>Password</th>
                 <th>LastName</th>
-                <th>BirthDate</th>
                 <th>Address</th>
                 <th>actions</th>
             </tr>
@@ -26,8 +25,12 @@
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.password }}</td>
                 <td>{{ user.lastName }}</td>
-                <td>{{ user.birthDate ? user.birthDate|date('Y-m-d') : '' }}</td>
-                <td>{{ user.address }}</td>
+                {% for adr in user.address %}
+                <tr>
+                    <th>Address - {{loop.index}}</th>
+                    <td>{{ adr }}</td>
+                </tr>
+                {% endfor %}
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
