@@ -114,5 +114,13 @@ class HomeController extends AbstractController
             "address" => $this->getUser()->getAddress()
         ]);
     }
+
+    /**
+     * @Route("/congrates", name="congrates", methods={"GET"})
+     */
+    public function congrates(): Response
+    {
+        return $this->render('home/congrates.html.twig');
+    }
 }
 ?>

@@ -10,3 +10,12 @@ a.text-primary-hover:hover {
 .card-footer{
   text-align: center;
 }
+
+.card a img{
+  max-height: 20vh;
+  width: auto;
+}
+
+.card a{
+  text-align: center;
+}

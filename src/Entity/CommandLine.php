@@ -17,7 +17,7 @@ class CommandLine
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="commandLines")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Orders", inversedBy="commandLines")
      * @ORM\JoinColumn(nullable=false)
      */
     private $orders;
@@ -38,12 +38,12 @@ class CommandLine
         return $this->id;
     }
 
-    public function getOrders(): ?Order
+    public function getOrders(): ?Orders
     {
         return $this->orders;
     }
 
-    public function setOrders(?Order $orders): self
+    public function setOrders(?Orders $orders): self
     {
         $this->orders = $orders;
 

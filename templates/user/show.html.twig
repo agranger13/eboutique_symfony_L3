@@ -3,7 +3,7 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1>Profile</h1>
 
     <table class="table">
         <tbody>
@@ -42,6 +42,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <a href="{{url('user_address_new')}}">new address<a>
 
     
 
